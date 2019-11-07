@@ -10,9 +10,35 @@ import torchvision
 from torchvision import datasets, transforms
 import numpy as np
 import matplotlib.pyplot as plt
+import argparse
 
 from data import data_transforms, train_data_transforms, ImbalancedDatasetSampler
-from model import GNet3, GNet2
+from model import Net1, Net2, Net3, Net4, Net5
+
+# parser = argparse.ArgumentParser(description='PyTorch GTSRB example')
+# parser.add_argument('--data', type=str, default='data', metavar='D',
+#                     help="folder where data is located. train_data.zip and test_data.zip need to be found in the folder")
+# parser.add_argument('--batch-size', type=int, default=64, metavar='N',
+#                     help='input batch size for training (default: 64)')
+# parser.add_argument('--epochs', type=int, default=30, metavar='N',
+#                     help='number of epochs to train (default: 10)')
+# parser.add_argument('--lr', type=float, default=0.0001, metavar='LR',
+#                     help='learning rate (default: 0.01)')
+# parser.add_argument('--momentum', type=float, default=0.5, metavar='M',
+#                     help='SGD momentum (default: 0.5)')
+# parser.add_argument('--seed', type=int, default=1, metavar='S',
+#                     help='random seed (default: 1)')
+# parser.add_argument('--log-interval', type=int, default=30, metavar='N',
+#                     help='how many batches to wait before logging training status')
+# parser.add_argument('--num_workers', type=int, default=4, metavar='W',
+#                     help='number of workers (default: 4)')
+# parser.add_argument('--outfile', type=str, default='gtsrb_kaggle.csv', metavar='O',
+#                     help='name of output file, default is gtsrb_kaggle.csv')
+# parser.add_argument('--checkpoint', type=str, default='', metavar='C',
+#                     help='checkpoint, default:empty')
+# args = parser.parse_args()
+#
+# torch.manual_seed(args.seed)
 
 args = dict(
     batch_size=64,
@@ -21,12 +47,11 @@ args = dict(
     checkpoint='',
     lr=1e-4,
     epochs=100,
-    momentum=.5,
+    momentum=.8,
     log_interval=30,
     outfile='gtsrb_kaggle.csv'
 )
 args = namedtuple('Args', args.keys())(**args)
-print(args)
 
 if torch.cuda.is_available():
     gpu = True
@@ -40,19 +65,18 @@ LongTensor = torch.cuda.LongTensor if gpu else torch.LongTensor
 ByteTensor = torch.cuda.ByteTensor if gpu else torch.ByteTensor
 Tensor = FloatTensor
 
-model = GNet3()
+model = Net4()
 if gpu: model.cuda()
 optimizer = optim.Adam(filter(lambda p: p.requires_grad, model.parameters()), lr=args.lr)
 # optimizer = optim.SGD(model.parameters(), lr=1e-6)
-scheduler = optim.lr_scheduler.ReduceLROnPlateau(
-    optimizer, 'min', patience=3, factor=0.1, verbose=True)
+scheduler = optim.lr_scheduler.ReduceLROnPlateau(optimizer, 'min', patience=3, factor=0.1, verbose=True)
 
 train_dataset = datasets.ImageFolder(args.data + '/train_images', transform=train_data_transforms)
 val_dataset = datasets.ImageFolder(args.data + '/val_images', transform=data_transforms)
 
 train_loader = torch.utils.data.DataLoader(
     train_dataset, batch_size=args.batch_size,
-    # shuffle=True,
+    #shuffle=True,
     sampler=ImbalancedDatasetSampler(train_dataset),
     num_workers=args.num_workers, pin_memory=True)
 val_loader = torch.utils.data.DataLoader(
@@ -183,7 +207,7 @@ def validation(epoch):
         # plotter.plot('loss', 'val', 'Class Loss', epoch, losses.avg)
         # plotter.plot('acc', 'val', 'Class Accuracy', epoch, accuracies.avg)
         print('\nValidation set: Average loss: {:.4f}, Accuracy: {}/{} ({:.2f}%)\n'.format(
-            losses.avg, accuracies.sum, accuracies.count, accuracies.avg))
+            losses.avg, accuracies.sum/100, accuracies.count, accuracies.avg))
 
         return losses.avg, accuracies.avg
 
@@ -191,6 +215,6 @@ for epoch in range(1, args.epochs + 1):
     train(epoch)
     validation_loss, accuracy = validation(epoch)
     scheduler.step(round(validation_loss, 3))
-    model_file = 'checkpoints/{}Im_epoch{}_val{}_acc{}.pth'.format(
+    model_file = 'checkpoints/{}_epoch{}_val{:.6f}_acc{:.3f}.pth'.format(
         model.__class__.__name__, epoch, validation_loss, accuracy)
     torch.save(model.state_dict(), model_file)

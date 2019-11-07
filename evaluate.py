@@ -10,7 +10,7 @@ def pil_loader(path):
     with open(path, 'rb') as f:
         with Image.open(f) as img:
             return img.convert('RGB')
-from model import GNet3, GNet2
+from model import Net1, Net2
 
 model_files = [
     ('best_models/GNet2_epoch22_val0.02080939228840332_acc99.7157622739018.pth', GNet2, False),
