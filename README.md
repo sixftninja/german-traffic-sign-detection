@@ -2,6 +2,10 @@
 
 The German Traffic Sign Recognition Benchmark (GTSRB) is a multi-class, single-image classification challenge held at the International Joint Conference on Neural Networks (IJCNN) 2011. It consists of about 50,000 images in total which are classified into 43 categories with unbalanced distribution between the categories.
 
+## Data
+
+Download data [here](http://benchmark.ini.rub.de)
+
 ## Methods used
 
 1. IDSIA MCDNN Network : [Multi Column DNN](http://people.idsia.ch/~juergen/nn2012traffic.pdf)
