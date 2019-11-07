@@ -15,43 +15,43 @@ import argparse
 from data import data_transforms, train_data_transforms, ImbalancedDatasetSampler
 from model import Net1, Net2, Net3, Net4, Net5
 
-# parser = argparse.ArgumentParser(description='PyTorch GTSRB example')
-# parser.add_argument('--data', type=str, default='data', metavar='D',
-#                     help="folder where data is located. train_data.zip and test_data.zip need to be found in the folder")
-# parser.add_argument('--batch-size', type=int, default=64, metavar='N',
-#                     help='input batch size for training (default: 64)')
-# parser.add_argument('--epochs', type=int, default=30, metavar='N',
-#                     help='number of epochs to train (default: 10)')
-# parser.add_argument('--lr', type=float, default=0.0001, metavar='LR',
-#                     help='learning rate (default: 0.01)')
-# parser.add_argument('--momentum', type=float, default=0.5, metavar='M',
-#                     help='SGD momentum (default: 0.5)')
-# parser.add_argument('--seed', type=int, default=1, metavar='S',
-#                     help='random seed (default: 1)')
-# parser.add_argument('--log-interval', type=int, default=30, metavar='N',
-#                     help='how many batches to wait before logging training status')
-# parser.add_argument('--num_workers', type=int, default=4, metavar='W',
-#                     help='number of workers (default: 4)')
-# parser.add_argument('--outfile', type=str, default='gtsrb_kaggle.csv', metavar='O',
-#                     help='name of output file, default is gtsrb_kaggle.csv')
-# parser.add_argument('--checkpoint', type=str, default='', metavar='C',
-#                     help='checkpoint, default:empty')
-# args = parser.parse_args()
-#
-# torch.manual_seed(args.seed)
+parser = argparse.ArgumentParser(description='PyTorch GTSRB example')
+parser.add_argument('--data', type=str, default='data', metavar='D',
+                    help="folder where data is located. train_data.zip and test_data.zip need to be found in the folder")
+parser.add_argument('--batch-size', type=int, default=64, metavar='N',
+                    help='input batch size for training (default: 64)')
+parser.add_argument('--epochs', type=int, default=30, metavar='N',
+                    help='number of epochs to train (default: 10)')
+parser.add_argument('--lr', type=float, default=0.0001, metavar='LR',
+                    help='learning rate (default: 0.01)')
+parser.add_argument('--momentum', type=float, default=0.5, metavar='M',
+                    help='SGD momentum (default: 0.5)')
+parser.add_argument('--seed', type=int, default=1, metavar='S',
+                    help='random seed (default: 1)')
+parser.add_argument('--log-interval', type=int, default=30, metavar='N',
+                    help='how many batches to wait before logging training status')
+parser.add_argument('--num_workers', type=int, default=4, metavar='W',
+                    help='number of workers (default: 4)')
+parser.add_argument('--outfile', type=str, default='gtsrb_kaggle.csv', metavar='O',
+                    help='name of output file, default is gtsrb_kaggle.csv')
+parser.add_argument('--checkpoint', type=str, default='', metavar='C',
+                    help='checkpoint, default:empty')
+args = parser.parse_args()
 
-args = dict(
-    batch_size=64,
-    num_workers=4,
-    data='data',
-    checkpoint='',
-    lr=1e-4,
-    epochs=100,
-    momentum=.8,
-    log_interval=30,
-    outfile='gtsrb_kaggle.csv'
-)
-args = namedtuple('Args', args.keys())(**args)
+torch.manual_seed(args.seed)
+
+# args = dict(
+#     batch_size=64,
+#     num_workers=4,
+#     data='data',
+#     checkpoint='',
+#     lr=1e-4,
+#     epochs=100,
+#     momentum=.8,
+#     log_interval=30,
+#     outfile='gtsrb_kaggle.csv'
+# )
+# args = namedtuple('Args', args.keys())(**args)
 
 if torch.cuda.is_available():
     gpu = True
