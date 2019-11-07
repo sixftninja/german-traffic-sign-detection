@@ -17,7 +17,7 @@ Download data [here](http://benchmark.ini.rub.de)
 7. Data Augmentation
 8. Ensemble Methods
 
-## Architectures:
+## Architectures
 
 1. Net1 : IDSIA, 3 Conv, 2 FC, Batchnorm and Dropout
 2. Net2 : IDSIA, 3 Conv, 2 FC, Batchnorm, 1 STN
@@ -26,17 +26,17 @@ Download data [here](http://benchmark.ini.rub.de)
 5. Net5 : IDSIA, 3 Conv, 2 FC, Batchnorm, Dropout, 2 STNs with Batchnorm
 
 
-## Results:
+## Results
 Ensemble of all 5 => 99.6% test accuracy
 
-## Training:
+## Training
 Use the following command to train-
 
 ```python main.py --data data --batch-size batch_size --lr lr --epochs epochs```
 
 Where data specifies the name of the data folder and lr the learning rate
 
-## Evaluation:
+## Evaluation
 make a folder titled best_models and save your best models' .pth files there, then run
 
 ```python evaluate.py```
