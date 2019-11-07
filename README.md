@@ -30,10 +30,7 @@ Use the following command to train-
 
 ```python main.py --data data --batch-size batch_size --lr lr --epochs epochs```
 
-Where:
-data specifies the name of the data folder,
-
-lr is desired learning rate
+Where data specifies the name of the data folder and lr the learning rate
 
 ## Evaluation:
 make a folder titled best_models and save your best models' .pth files there, then run
