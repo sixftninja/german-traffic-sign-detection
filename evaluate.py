@@ -2,6 +2,25 @@ from __future__ import print_function
 from tqdm import tqdm
 import os
 import PIL.Image as Image
+import argparse
+import torch
+import torch.nn as nn
+import torch.nn.functional as F
+import torch.optim as optim
+import torchvision
+from torchvision import datasets, transforms
+
+from model import Net1, Net2, Net3, Net4, Net5
+
+
+parser = argparse.ArgumentParser(description='PyTorch GTSRB evaluation script')
+parser.add_argument('--data', type=str, default='data', metavar='D',
+                    help="folder where data is located. train_data.zip and test_data.zip need to be found in the folder")
+parser.add_argument('--outfile', type=str, default='gtsrb_kaggle.csv', metavar='D',
+                    help="name of the output csv file")
+
+args = parser.parse_args()
+
 
 test_dir = args.data + '/test_images'
 
@@ -10,16 +29,15 @@ def pil_loader(path):
     with open(path, 'rb') as f:
         with Image.open(f) as img:
             return img.convert('RGB')
-from model import Net1, Net2
 
 model_files = [
-    ('best_models/GNet2_epoch22_val0.02080939228840332_acc99.7157622739018.pth', GNet2, False),
-    ('best_models/GNet2_epoch7_val0.02073047148779981_acc99.63824289405684.pth', GNet2, False),
-    ('best_models/GNet2Aug_epoch3_val0.07817342521608338_acc99.7416000366211.pth', GNet2, True),
-    # ('best_models/GNet3NoDrop_epoch47_val0.012727167224390238_acc99.68992248062015.pth', GNet3, True),
-    ('best_models/GNet3Im_epoch51_val0.01239507444759332_acc99.79328165374677.pth', GNet3, True),
+    ('best_models/Net1_epoch6_val0.058281_acc99.198.pth', Net1, True),
+    ('best_models/Net2_epoch7_val0.020730_acc99.638.pth', Net2, True),
+    ('best_models/Net3_epoch47_val0.012727_acc99.689.pth', Net3, True),
+    ('best_models/Net4_epoch51_val0.012395_acc99.793.pth', Net4, True),
+    ('best_models/Net5_epoch22_val0.020809_acc99.715.pth', Net5, True),
 ]
-models = []; clahes = [False, False, True, True]
+models = []; clahes = [True, True, True, True, True]
 for modelf, cls, clahe in model_files:
     model = cls()
     model.load_state_dict(torch.load(modelf))
@@ -62,4 +80,3 @@ output_file.close()
 
 print("Succesfully wrote " + args.outfile + ', you can upload this file to the kaggle '
       'competition at https://www.kaggle.com/c/nyu-cv-fall-2018/')
-'''

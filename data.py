@@ -1,5 +1,4 @@
 from __future__ import print_function
-from collections import namedtuple
 import cv2
 from PIL import Image
 import torch
@@ -9,13 +8,10 @@ import torch.optim as optim
 import torchvision
 from torchvision import datasets, transforms
 import numpy as np
-import matplotlib.pyplot as plt
+
 
 class CLAHE:
-    """
-    Contrast Limited Adaptive histogram equalization
-    https://gist.github.com/bigsnarfdude/2fbdb37eea29f9fec1ace88f7bf2bf9f
-    """
+    """ Contrast Limited Adaptive histogram equalization """
     def __init__(self, clipLimit=2.0, tileGridSize=(8, 8)):
         self.clipLimit = clipLimit
         self.tileGridSize = tileGridSize

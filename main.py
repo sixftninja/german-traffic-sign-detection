@@ -37,21 +37,8 @@ parser.add_argument('--outfile', type=str, default='gtsrb_kaggle.csv', metavar='
 parser.add_argument('--checkpoint', type=str, default='', metavar='C',
                     help='checkpoint, default:empty')
 args = parser.parse_args()
-
+print(args)
 torch.manual_seed(args.seed)
-
-# args = dict(
-#     batch_size=64,
-#     num_workers=4,
-#     data='data',
-#     checkpoint='',
-#     lr=1e-4,
-#     epochs=100,
-#     momentum=.8,
-#     log_interval=30,
-#     outfile='gtsrb_kaggle.csv'
-# )
-# args = namedtuple('Args', args.keys())(**args)
 
 if torch.cuda.is_available():
     gpu = True
@@ -68,7 +55,6 @@ Tensor = FloatTensor
 model = Net4()
 if gpu: model.cuda()
 optimizer = optim.Adam(filter(lambda p: p.requires_grad, model.parameters()), lr=args.lr)
-# optimizer = optim.SGD(model.parameters(), lr=1e-6)
 scheduler = optim.lr_scheduler.ReduceLROnPlateau(optimizer, 'min', patience=3, factor=0.1, verbose=True)
 
 train_dataset = datasets.ImageFolder(args.data + '/train_images', transform=train_data_transforms)

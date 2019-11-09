@@ -1,5 +1,3 @@
-from __future__ import print_function
-from collections import namedtuple
 import cv2
 from PIL import Image
 import torch
@@ -108,7 +106,7 @@ class Net2(nn.Module):
         x = self.fc2(x)
         return F.log_softmax(x, dim=1)
 
-'''-------------Net3(IDSIA5):3Conv(150,200,300) | 2FC-(350,43) | BatchNorm | FCDropOut | 1STN-------------'''
+'''-------------Net3(IDSIA5):3Conv(150,200,300) | 2FC-(350,43) | BatchNorm | DropOut | 1STN-------------'''
 
 class Net3(nn.Module):
     def __init__(self):
@@ -140,7 +138,7 @@ class Net3(nn.Module):
         x = self.fc2(self.fc_drop(x))
         return F.log_softmax(x, dim=1)
 
-'''-------------Net4 (GNet2):4Conv(150,200,300,350) | 2FC-(350,43) | BatchNorm | FCDropOut | 2STNs-------------'''
+'''-------------Net4 (GNet2):3Conv(150,200,300,350) | 2FC-(350,43) | BatchNorm | DropOut | 2STNs-------------'''
 
 class Stn1(nn.Module):
     def __init__(self, n1, n2, n3, in_channels=3, in_size=48,
@@ -219,7 +217,7 @@ class Net4(nn.Module):
         x = self.fc2(self.drop(x))
         return F.log_softmax(x, dim=1)
 
-'''-----------Ner5(GNet3):4Conv(150,200,300, 350) | 2FC-(350,43) | BatchNorm | FCDropOut | 2STNs+BN-----------'''
+'''-----------Ner5(GNet3):3Conv(150,200,300) | 2FC-(350,43) | BatchNorm | FCDropOut | 2STNs+BN-----------'''
 
 class Stn2(nn.Module):
     def __init__(self, n1, n2, n3, in_channels=3, in_size=48,
